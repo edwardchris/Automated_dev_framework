@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -60,7 +61,32 @@ public class UserManager {
         return false;
     }
 
-    
+
+    @ApiOperation(value = "获取用户信息接口", httpMethod = "POST")
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST)
+    public List<User> getUserInfo(HttpServletRequest request, @RequestBody User user) {
+        Boolean x = verifyCookies(request);
+        if (!x) {
+            List<User> users = template.selectList("getUserInfo", user);
+            log.info("获取到用户数量为" + users.size());
+            return users;
+        } else {
+            return null;
+        }
+    }
+
+
+    @ApiOperation(value = "更新用户信息接口", httpMethod = "POST")
+    @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+    public int updateUserInfo(HttpServletRequest request, @RequestBody User user) {
+        Boolean x = verifyCookies(request);
+        int i = 0;
+        if (!x) {
+            i = template.update("updateUserInfo", user);
+        }
+        log.info("更新数据的条目数为:" + i);
+        return i;
+    }
 
     private Boolean verifyCookies(HttpServletRequest request) {
         String cookieKey = "login";
