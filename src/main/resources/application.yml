@@ -8,7 +8,7 @@ spring:
     name: userManager
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.40.132:3306/course
+    url: jdbc:mysql://192.168.40.132:3306/course?characterEncoding=utf8&useSSL=true
     username: admin
     password: admin
 mybatis:
